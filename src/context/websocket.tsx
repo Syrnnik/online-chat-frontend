@@ -2,6 +2,7 @@ import { queryClient } from "api/queryClient"
 import { createContext, useContext, useEffect } from "react"
 import { FCC } from "type/fcc"
 import { getWebSocketBaseUrl } from "util/urls"
+import { getUserToken } from "util/userToken"
 
 interface WebSocketContextProps {
   // sendText: (message: string) => void
@@ -18,7 +19,10 @@ export const WebSocketContextProvider: FCC = (props) => {
 
   useEffect(
     () => {
+      const token = getUserToken()
+
       const ws = new WebSocket(webSocketUrl)
+      // ws.send(JSON.stringify({ token }))
 
       ws.onmessage = (event) => {
         const message = event.data
@@ -26,63 +30,6 @@ export const WebSocketContextProvider: FCC = (props) => {
         switch (message) {
           case "purchase":
             queryClient.invalidateQueries("purchasesList")
-            break
-
-          case "purchase_delivery":
-            queryClient.invalidateQueries("purchaseDeliveriesList")
-            break
-
-          case "purchase_service":
-            queryClient.invalidateQueries("purchaseServicesList")
-            break
-
-          case "purchase_delivery_service":
-            queryClient.invalidateQueries("deliveryServicesList")
-            break
-
-          case "supplier":
-          case "supplier_manager":
-            queryClient.invalidateQueries("suppliersWithManagersList")
-            break
-
-          case "file":
-            queryClient.invalidateQueries("purchasesList")
-            queryClient.invalidateQueries("purchaseDeliveriesList")
-            break
-
-          case "comment":
-            queryClient.invalidateQueries()
-            break
-
-          case "order":
-            queryClient.invalidateQueries("ordersResponse")
-            break
-
-          case "good":
-            queryClient.invalidateQueries("goodsResponse")
-            break
-
-          case "user":
-          case "role":
-            queryClient.invalidateQueries("currentUser")
-            queryClient.invalidateQueries("usersList")
-            queryClient.invalidateQueries("rolesList")
-            break
-
-          case "storage":
-          case "storage_good":
-            queryClient.invalidateQueries("purchaseDeliveriesList")
-            queryClient.invalidateQueries("storageGoodsList")
-            queryClient.invalidateQueries("storageActualInfo")
-            break
-
-          case "production_info":
-            queryClient.invalidateQueries("goodsWithProductionInfoList")
-            break
-
-          case "table_access":
-            queryClient.invalidateQueries("roleTableAccess")
-            queryClient.invalidateQueries("userTableAccessList")
             break
         }
       }

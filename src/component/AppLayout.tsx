@@ -1,6 +1,7 @@
 import { Button, Flex, useColorMode } from "@chakra-ui/react"
 import { axiosClient } from "api/axiosClient"
 import { AxiosError } from "axios"
+import { Sidebar } from "component/sidebar/Sidebar"
 import { useAuthContext } from "context/auth"
 import { FC, useEffect } from "react"
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom"
@@ -36,16 +37,16 @@ export const AppLayout: FC = () => {
   if (isAuthenticated) {
     return (
       <Flex h="full" w="full" bgColor="appLayout" direction="row">
-        {/* TODO: add sidebar with chats */}
-        {/* <Sidebar /> */}
         <Flex position="absolute" top={5} right={5}>
           <Button onClick={handleColorModeChange}>Toggle Color Mode</Button>
         </Flex>
+
+        <Sidebar />
 
         <Outlet />
       </Flex>
     )
   }
 
-  return <Navigate to="/auth" state={{ from: location }} />
+  return <Navigate to="/sign-in" state={{ from: location }} />
 }

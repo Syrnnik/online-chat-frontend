@@ -1,3 +1,4 @@
+import { Chat } from "page/Chat"
 import { SignIn } from "page/SignIn"
 import { SignUp } from "page/SignUp"
 import { getApiBaseUrl, getWebSocketBaseUrl } from "util/urls"
@@ -15,6 +16,15 @@ export const configuration = {
   version: "v0.0.1",
   isDevEnv: process.env.NODE_ENV === "development",
   sidebarItems: [
+    //* Main pages
+
+    // Chat
+    {
+      type: "main",
+      name: "Chat",
+      path: "/chat/:id",
+      component: <Chat />,
+    },
     //* Side pages
     // Sign In
     {

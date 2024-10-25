@@ -2,6 +2,7 @@ import { queryClient } from "api/queryClient"
 import { AppLayout } from "component/AppLayout"
 import { configuration } from "configuration"
 import { AuthContextProvider } from "context/auth"
+import { UserContextProvider } from "context/user"
 // import { UserContextProvider } from "context/user"
 import { WebSocketContextProvider } from "context/websocket"
 import { QueryClientProvider } from "react-query"
@@ -29,23 +30,23 @@ export const AppRouter = () => {
               ))}
             </Routes>
 
-            {/* <UserContextProvider> */}
-            <Routes>
-              <Route path="/" element={<AppLayout />}>
-                {mainPages.map(
-                  ({ name, index = false, path, component, isDisabled }) =>
-                    !isDisabled && (
-                      <Route
-                        key={name}
-                        index={index}
-                        path={path}
-                        element={component}
-                      />
-                    ),
-                )}
-              </Route>
-            </Routes>
-            {/* </UserContextProvider> */}
+            <UserContextProvider>
+              <Routes>
+                <Route path="/" element={<AppLayout />}>
+                  {mainPages.map(
+                    ({ name, index = false, path, component, isDisabled }) =>
+                      !isDisabled && (
+                        <Route
+                          key={name}
+                          index={index}
+                          path={path}
+                          element={component}
+                        />
+                      ),
+                  )}
+                </Route>
+              </Routes>
+            </UserContextProvider>
           </AuthContextProvider>
         </WebSocketContextProvider>
       </QueryClientProvider>
